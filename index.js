@@ -35,6 +35,7 @@ async function run() {
         // Send a ping to confirm a successful connection
 
         const assignmentCollection = client.db("userDB").collection("assignment");
+        const submitCollection = client.db("userDB").collection("submit");
         app.get("/assignment", async (req, res) => {
             const result = await assignmentCollection.find().toArray();
             console.log(result);
@@ -80,6 +81,21 @@ async function run() {
             const result = await assignmentCollection.updateOne(filter, products, options);
             res.send(result);
           })
+
+
+          app.delete('/assignment/:id', async (req, res) => {
+            try{
+                const id = req.params.id;
+                const query = { _id: new ObjectId(id) }
+                const result = await assignmentCollection.deleteOne(query);
+                res.send(result);
+            } catch(error)
+            {
+                console.log(error)
+            }
+              
+          })
+          
 
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
