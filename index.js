@@ -36,6 +36,7 @@ async function run() {
 
         const assignmentCollection = client.db("userDB").collection("assignment");
         const submitCollection = client.db("userDB").collection("submit");
+        
         app.get("/assignment", async (req, res) => {
             const result = await assignmentCollection.find().toArray();
             console.log(result);
@@ -96,6 +97,33 @@ async function run() {
               
           })
           
+
+
+
+
+        //   submit
+
+        app.get("/submit", async (req, res) => {
+            const result = await submitCollection.find().toArray();
+            console.log(result);
+            res.send(result);
+          });
+      
+
+        app.post("/submit", async (req, res) => {
+            try {
+                const body = req.body;
+                const result = await submitCollection.insertOne(body);
+                console.log(result);
+                res.send(result);
+
+                
+            } catch (error) {
+                console.log(error);
+
+            }
+
+        });
 
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
