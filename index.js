@@ -152,7 +152,7 @@ async function run() {
     }
 }
 run().catch(console.dir);
-app.get("/", ( res) => {
+app.get("/", (req, res) => {
     res.send("Crud is running .....");
 });
 
