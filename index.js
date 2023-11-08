@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 //romanami652
 //3cll9d7TvTc8ybam
@@ -124,6 +124,30 @@ async function run() {
             }
 
         });
+
+        app.put('/submit/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const updatedSubmit = req.body;
+          
+            const products = {
+                $set: {
+          
+         
+                
+                    marks: updatedSubmit.marks,
+                    feedback: updatedSubmit.feedback,
+                    status: updatedSubmit.status,
+                   
+                   
+                   
+                }
+            }
+          
+            const result = await submitCollection.updateOne(filter, products, options);
+            res.send(result);
+          })
 
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
